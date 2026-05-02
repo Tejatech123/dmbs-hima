@@ -16,7 +16,6 @@ import {
 import { supabase } from "@/lib/supabase";
 
 export default function NewRecordPage() {
-  const isEdit = false;
   const router = useRouter();
   const [isSaving, setIsSaving] = useState(false);
   const [formData, setFormData] = useState({
@@ -33,7 +32,7 @@ export default function NewRecordPage() {
     image_url: ""
   });
 
-  const handleChange = (e: any) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 

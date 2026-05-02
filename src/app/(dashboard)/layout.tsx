@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
 import Sidebar from "@/components/layout/Sidebar";
 import { Search, Bell, ShieldAlert } from "lucide-react";
 
@@ -11,12 +10,10 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }) {
   const [authorized, setAuthorized] = useState<boolean | null>(null);
-  const router = useRouter();
 
   useEffect(() => {
     const user = localStorage.getItem("user");
     if (!user) {
-      // Use window.location for hard redirect to avoid router race conditions on mount
       window.location.href = "/";
     } else {
       setAuthorized(true);
