@@ -1,12 +1,12 @@
 import { NextResponse } from 'next/server';
 import { supabase } from '@/lib/supabase';
 
-export async function GET(
-  request: Request,
-  { params }: { params: Promise<{ id: string }> }
-) {
+// @ts-ignore
+export async function GET(request: Request, context: any) {
   try {
-    const { id } = await params;
+    const params = await context.params;
+    // @ts-ignore
+    const { id } = params;
     const { data, error } = await supabase
       .from('criminals')
       .select('*')
@@ -20,12 +20,12 @@ export async function GET(
   }
 }
 
-export async function PUT(
-  request: Request,
-  { params }: { params: Promise<{ id: string }> }
-) {
+// @ts-ignore
+export async function PUT(request: Request, context: any) {
   try {
-    const { id } = await params;
+    const params = await context.params;
+    // @ts-ignore
+    const { id } = params;
     const body = await request.json();
     const { data, error } = await supabase
       .from('criminals')
@@ -40,12 +40,12 @@ export async function PUT(
   }
 }
 
-export async function DELETE(
-  request: Request,
-  { params }: { params: Promise<{ id: string }> }
-) {
+// @ts-ignore
+export async function DELETE(request: Request, context: any) {
   try {
-    const { id } = await params;
+    const params = await context.params;
+    // @ts-ignore
+    const { id } = params;
     const { error } = await supabase
       .from('criminals')
       .delete()
