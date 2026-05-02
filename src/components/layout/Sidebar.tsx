@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { 
   LayoutDashboard, 
   Users, 
@@ -27,7 +27,6 @@ const menuItems = [
 
 export default function Sidebar() {
   const pathname = usePathname();
-  const router = useRouter();
 
   const handleLogout = () => {
     localStorage.removeItem("user");
@@ -36,7 +35,6 @@ export default function Sidebar() {
 
   return (
     <aside className="w-72 bg-[var(--surface)] border-r border-white/5 flex flex-col h-screen fixed left-0 top-0 z-50">
-      {/* Sidebar Header */}
       <div className="p-6 border-b border-white/5">
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 bg-[var(--primary-accent)]/20 border border-[var(--primary-accent)]/30 rounded-lg flex items-center justify-center">
@@ -49,7 +47,6 @@ export default function Sidebar() {
         </div>
       </div>
 
-      {/* Menu Items */}
       <nav className="flex-1 px-4 py-6 space-y-2 overflow-y-auto">
         {menuItems.map((item) => {
           const isActive = pathname === item.href;
@@ -73,7 +70,6 @@ export default function Sidebar() {
         })}
       </nav>
 
-      {/* User Footer */}
       <div className="p-4 mt-auto border-t border-white/5 bg-black/20">
         <div className="flex items-center gap-3 mb-4 px-2">
           <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-[var(--primary-accent)] to-[var(--teal)] p-[1px]">

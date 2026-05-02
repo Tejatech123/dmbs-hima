@@ -1,15 +1,13 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
-import { Shield, Lock, User, ArrowRight, Loader2, AlertTriangle } from "lucide-react";
+import { Shield, Lock, User, ArrowRight, AlertTriangle } from "lucide-react";
 
 export default function LoginPage() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const router = useRouter();
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -34,12 +32,10 @@ export default function LoginPage() {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-[var(--background)] p-4">
-      {/* Background Grid/Matrix Effect */}
       <div className="fixed inset-0 opacity-10 pointer-events-none" 
            style={{ backgroundImage: 'radial-gradient(var(--teal) 1px, transparent 1px)', backgroundSize: '40px 40px' }}></div>
       
       <div className="w-full max-w-[450px] relative z-10">
-        {/* Hex Badge Logo Area */}
         <div className="flex flex-col items-center mb-10">
           <div className="w-24 h-24 mb-6 relative">
             <div className="absolute inset-0 bg-[var(--primary-accent)] rotate-45 rounded-xl opacity-20 animate-pulse"></div>
@@ -57,7 +53,6 @@ export default function LoginPage() {
           </div>
         </div>
 
-        {/* Login Card */}
         <div className="cyber-card backdrop-blur-xl border-white/10 p-8">
           <h2 className="font-mono text-xs uppercase tracking-[0.3em] text-[var(--muted)] mb-8 flex items-center gap-2">
             <Lock className="w-3 h-3" /> System Authentication Required
@@ -114,13 +109,11 @@ export default function LoginPage() {
                   <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
                 </div>
               )}
-              {/* Scanline Effect */}
               <div className="absolute inset-0 bg-white/5 -translate-y-full animate-scanline pointer-events-none"></div>
             </button>
           </form>
         </div>
 
-        {/* Demo Credentials Box */}
         <div className="mt-8 p-4 bg-black/40 border border-white/5 rounded-xl">
           <p className="text-[10px] uppercase tracking-widest text-[var(--muted)] mb-3 text-center">Development Clearance Credentials</p>
           <div className="grid grid-cols-3 gap-2">

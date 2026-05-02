@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, use } from "react";
+import { useState, useEffect, use, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { 
   Save, 
@@ -15,8 +15,11 @@ import {
 } from "lucide-react";
 import { supabase } from "@/lib/supabase";
 
-// @ts-ignore
-export default function EditRecordPage({ params: paramsPromise }: any) {
+interface EditRecordPageProps {
+  params: Promise<{ id: string }>;
+}
+
+export default function EditRecordPage({ params: paramsPromise }: EditRecordPageProps) {
   const params = use(paramsPromise);
   const router = useRouter();
   const [isSaving, setIsSaving] = useState(false);
@@ -34,26 +37,22 @@ export default function EditRecordPage({ params: paramsPromise }: any) {
     image_url: ""
   });
 
-  useEffect(() => {
-    // @ts-ignore
-    if (params?.id) {
-      fetchRecord();
-    }
-    // @ts-ignore
-  }, [params?.id]);
-
-  const fetchRecord = async () => {
+  const fetchRecord = useCallback(async () => {
+    if (!params?.id) return;
     const { data, error } = await supabase
       .from('criminals')
       .select('*')
-      // @ts-ignore
       .eq('id', params.id)
       .single();
     
-    if (data) setFormData(data);
-  };
+    if (data && !error) setFormData(data);
+  }, [params?.id]);
 
-  const handleChange = (e: any) => {
+  useEffect(() => {
+    fetchRecord();
+  }, [fetchRecord]);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
@@ -67,7 +66,6 @@ export default function EditRecordPage({ params: paramsPromise }: any) {
         ...formData,
         updated_at: new Date().toISOString()
       })
-      // @ts-ignore
       .eq('id', params.id);
 
     if (error) {
@@ -86,7 +84,6 @@ export default function EditRecordPage({ params: paramsPromise }: any) {
         </button>
         <div>
           <h1 className="text-3xl font-black tracking-tight text-white uppercase">Update Intel Record</h1>
-          {/* @ts-ignore */}
           <p className="text-[var(--muted)] text-sm font-mono tracking-widest uppercase">ID: {params?.id}</p>
         </div>
       </div>
@@ -164,7 +161,7 @@ export default function EditRecordPage({ params: paramsPromise }: any) {
           </div>
 
           <div className="space-y-6">
-            <h3 className="text-[10px] uppercase tracking-[0.4em] font-bold text-[var(--amber)] border-b border(--amber)/20 pb-2">03. Intel Documentation</h3>
+            <h3 className="text-[10px] uppercase tracking-[0.4em] font-bold text-[var(--amber)] border-b border-[var(--amber)]/20 pb-2">03. Intel Documentation</h3>
             <div className="space-y-2">
               <label className="text-[10px] uppercase tracking-widest text-[var(--muted)]">Detailed Description</label>
               <textarea name="description" value={formData.description} onChange={handleChange} className="cyber-input w-full min-h-[100px]"></textarea>

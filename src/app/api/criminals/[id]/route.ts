@@ -1,12 +1,16 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { supabase } from '@/lib/supabase';
 
-// @ts-ignore
-export async function GET(request: Request, context: any) {
+interface RouteContext {
+  params: Promise<{ id: string }>;
+}
+
+export async function GET(
+  request: NextRequest,
+  context: RouteContext
+) {
   try {
-    const params = await context.params;
-    // @ts-ignore
-    const { id } = params;
+    const { id } = await context.params;
     const { data, error } = await supabase
       .from('criminals')
       .select('*')
@@ -15,17 +19,18 @@ export async function GET(request: Request, context: any) {
     
     if (error) return NextResponse.json({ error: error.message }, { status: 404 });
     return NextResponse.json(data);
-  } catch (error) {
+  } catch (err) {
+    console.error(err);
     return NextResponse.json({ error: 'Failed to fetch' }, { status: 500 });
   }
 }
 
-// @ts-ignore
-export async function PUT(request: Request, context: any) {
+export async function PUT(
+  request: NextRequest,
+  context: RouteContext
+) {
   try {
-    const params = await context.params;
-    // @ts-ignore
-    const { id } = params;
+    const { id } = await context.params;
     const body = await request.json();
     const { data, error } = await supabase
       .from('criminals')
@@ -35,17 +40,18 @@ export async function PUT(request: Request, context: any) {
 
     if (error) return NextResponse.json({ error: error.message }, { status: 500 });
     return NextResponse.json(data);
-  } catch (error) {
+  } catch (err) {
+    console.error(err);
     return NextResponse.json({ error: 'Update failed' }, { status: 500 });
   }
 }
 
-// @ts-ignore
-export async function DELETE(request: Request, context: any) {
+export async function DELETE(
+  request: NextRequest,
+  context: RouteContext
+) {
   try {
-    const params = await context.params;
-    // @ts-ignore
-    const { id } = params;
+    const { id } = await context.params;
     const { error } = await supabase
       .from('criminals')
       .delete()
@@ -53,7 +59,8 @@ export async function DELETE(request: Request, context: any) {
 
     if (error) return NextResponse.json({ error: error.message }, { status: 500 });
     return NextResponse.json({ message: 'Deleted' });
-  } catch (error) {
+  } catch (err) {
+    console.error(err);
     return NextResponse.json({ error: 'Delete failed' }, { status: 500 });
   }
 }

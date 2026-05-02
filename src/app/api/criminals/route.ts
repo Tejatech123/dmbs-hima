@@ -10,7 +10,8 @@ export async function GET() {
     
     if (error) return NextResponse.json({ error: error.message }, { status: 500 });
     return NextResponse.json(data);
-  } catch (error) {
+  } catch (err) {
+    console.error(err);
     return NextResponse.json({ error: 'Failed to fetch criminals' }, { status: 500 });
   }
 }
@@ -24,8 +25,8 @@ export async function POST(request: Request) {
       .select();
 
     if (error) return NextResponse.json({ error: error.message }, { status: 500 });
-    return NextResponse.json(data[0], { status: 201 });
-  } catch (error: any) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    return NextResponse.json(data ? data[0] : null, { status: 201 });
+  } catch (err: any) {
+    return NextResponse.json({ error: err.message }, { status: 500 });
   }
 }

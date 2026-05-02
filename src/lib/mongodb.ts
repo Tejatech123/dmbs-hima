@@ -1,27 +1,18 @@
-import mongoose from 'mongoose';
+import { MongoClient } from "mongodb";
 
-const MONGODB_URI = process.env.MONGODB_URI || "";
+const uri = process.env.MONGODB_URI || "";
+const options = {};
 
-if (!MONGODB_URI) {
-  console.warn("Please define the MONGODB_URI environment variable inside .env.local");
+let client;
+let clientPromise: Promise<MongoClient>;
+
+if (!process.env.MONGODB_URI) {
+  // In development, use a placeholder to avoid build errors if not provided
+  client = new MongoClient("mongodb://localhost:27017/dummy");
+  clientPromise = Promise.resolve(client);
+} else {
+  client = new MongoClient(uri, options);
+  clientPromise = client.connect();
 }
 
-let cached = (global as any).mongoose;
-
-if (!cached) {
-  cached = (global as any).mongoose = { conn: null, promise: null };
-}
-
-async function connectDB() {
-  if (cached.conn) return cached.conn;
-
-  if (!cached.promise) {
-    cached.promise = mongoose.connect(MONGODB_URI).then((mongoose) => {
-      return mongoose;
-    });
-  }
-  cached.conn = await cached.promise;
-  return cached.conn;
-}
-
-export default connectDB;
+export default clientPromise;
