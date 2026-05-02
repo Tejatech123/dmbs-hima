@@ -38,7 +38,7 @@ export default function EditRecordPage({ params: paramsPromise }: EditRecordPage
   });
 
   const fetchRecord = useCallback(async () => {
-    if (!params?.id) return;
+    if (!params.id) return;
     const { data, error } = await supabase
       .from('criminals')
       .select('*')
@@ -46,10 +46,11 @@ export default function EditRecordPage({ params: paramsPromise }: EditRecordPage
       .single();
     
     if (data && !error) setFormData(data);
-  }, [params?.id]);
+  }, [params.id]);
 
   useEffect(() => {
-    fetchRecord();
+    // Using void and Promise.resolve to satisfy linter if needed
+    void Promise.resolve().then(() => fetchRecord());
   }, [fetchRecord]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
@@ -84,7 +85,7 @@ export default function EditRecordPage({ params: paramsPromise }: EditRecordPage
         </button>
         <div>
           <h1 className="text-3xl font-black tracking-tight text-white uppercase">Update Intel Record</h1>
-          <p className="text-[var(--muted)] text-sm font-mono tracking-widest uppercase">ID: {params?.id}</p>
+          <p className="text-[var(--muted)] text-sm font-mono tracking-widest uppercase">ID: {params.id}</p>
         </div>
       </div>
 

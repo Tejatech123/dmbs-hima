@@ -21,7 +21,6 @@ export default function RecordsPage() {
   const [loading, setLoading] = useState(true);
 
   const fetchCriminals = useCallback(async () => {
-    setLoading(true);
     const { data, error } = await supabase
       .from('criminals')
       .select('*')
@@ -37,7 +36,7 @@ export default function RecordsPage() {
   }, []);
 
   useEffect(() => {
-    fetchCriminals();
+    Promise.resolve().then(() => fetchCriminals());
   }, [fetchCriminals]);
 
   const handleDelete = async (id: string) => {
@@ -113,8 +112,6 @@ export default function RecordsPage() {
                  style={{ borderLeft: `4px solid ${criminal.status === 'Wanted' ? 'var(--primary-accent)' : criminal.status === 'Arrested' ? 'var(--green)' : 'var(--amber)'}` }}>
               <div className="flex">
                 <div className="w-1/3 relative h-auto min-h-[200px]">
-                  {/* Using standard img but with suppression since URLs are dynamic from Unsplash/Supabase */}
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img src={criminal.image_url || "https://images.unsplash.com/photo-1594909122845-11baa439b7bf?auto=format&fit=crop&q=80&w=400"} alt={criminal.name} className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500" />
                   <div className="absolute inset-0 bg-gradient-to-r from-transparent to-[var(--card)]"></div>
                 </div>

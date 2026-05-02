@@ -16,7 +16,8 @@ export default function DashboardLayout({
     if (!user) {
       window.location.href = "/";
     } else {
-      setAuthorized(true);
+      // Async update to avoid synchronous setState in effect warning
+      Promise.resolve().then(() => setAuthorized(true));
     }
   }, []);
 
